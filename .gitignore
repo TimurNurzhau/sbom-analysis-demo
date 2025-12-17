@@ -1,0 +1,19 @@
+# Maven
+target/
+.mvn/
+mvnw
+mvnw.cmd
+
+# IDE
+.idea/
+*.iml
+*.iws
+
+# System
+.DS_Store
+Thumbs.db
+
+# Dependency Track (локальные файлы, не нужны в CI)
+docker-compose.yml
+tools/
+reports/

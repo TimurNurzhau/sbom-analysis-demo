@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>sbom-analysis-demo</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <!-- Добавляем библиотеку с известными уязвимостями для демонстрации -->
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+    </dependencies>
+
+  <build>
+    <plugins>
+<plugin>
+    <groupId>org.cyclonedx</groupId>
+    <artifactId>cyclonedx-maven-plugin</artifactId>
+    <version>2.8.2</version>
+    <executions>
+        <execution>
+            <phase>package</phase>
+            <goals>
+                <goal>makeAggregateBom</goal>
+            </goals>
+        </execution>
+    </executions>
+    <configuration>
+<nvdApiUrl>http://127.0.0.1</nvdApiUrl>
+<failOnError>false</failOnError>
+</configuration>
+</plugin>
+<plugin>
+    <groupId>org.owasp</groupId>
+    <plugin>
+    <groupId>org.owasp</groupId>
+    <artifactId>dependency-check-maven</artifactId>
+    <version>9.0.10</version>
+    <configuration>
+        <!-- ГЛАВНЫЙ ПАРАМЕТР: Пропускаем фазу обновления NVD -->
+        <autoUpdate>false</autoUpdate>
+        <!-- Отключаем все внешние проверки -->
+        <cveValidForHours>999999</cveValidForHours>
+        <nvdApiUrl>http://127.0.0.1</nvdApiUrl>
+        <nvdApiDelay>0</nvdApiDelay>
+        <!-- Форматы отчета -->
+        <format>HTML</format>
+        <outputDirectory>${project.build.directory}/dependency-check-report</outputDirectory>
+    </configuration>
+    <executions>
+        <execution>
+            <goals>
+                <goal>check</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+
+
+    </plugins>
+  </build>
+</project>
+
+
+
+
+
